@@ -1,0 +1,15 @@
+namespace: production
+resources:
+- ../../base
+- namespace.yaml
+- dragonfly.yaml
+- resources.yaml
+- hpa.yaml
+patches:
+- target:
+    kind: Deployment
+    name: course-app
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 3

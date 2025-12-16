@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: course-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: course-app
+  template:
+    metadata:
+      labels:
+        app: course-app
+    spec:
+      containers:
+      - name: course-app
+        image: vvpet/course-app:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APP_STORE
+          value: dragonfly
+        - name: APP_DRAGONFLY_URL
+          value: dragonfly://dragonfly:6379/0
