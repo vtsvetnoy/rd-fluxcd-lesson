@@ -1,10 +1,15 @@
+# overlays/production/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 namespace: production
+# Використовуємо BASES для посилання на base
+bases:
+  - ../../base
+# Використовуємо RESOURCES лише для нових, окремих маніфестів
 resources:
-- ../../base
-- namespace.yaml
-- dragonfly.yaml
-- resources.yaml
-- hpa.yaml
+  - namespace.yaml
+  - dragonfly.yaml # Dragonfly для prod (2 репліки)
+  - hpa.yaml       # Horizontal Pod Autoscaler
 patches:
 - target:
     kind: Deployment
@@ -13,3 +18,4 @@ patches:
     - op: replace
       path: /spec/replicas
       value: 3
+    # ... інші патчі для requests/limits
